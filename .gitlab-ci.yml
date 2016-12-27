@@ -1,0 +1,8 @@
+image: registry.gitlab.com/tvaughan/gitlab-ci-docker-builder:latest
+
+services:
+  - docker:dind
+
+lint:
+  script:
+    - make lint

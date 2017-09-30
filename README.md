@@ -6,7 +6,7 @@ Terraform AWS StarterKit
 Quick Start
 ---
 
-* Purcharse a domain name somewhere.
+* Purchase a domain name somewhere.
 
 * Download and install [Docker](https://www.docker.com).
 

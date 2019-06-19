@@ -17,7 +17,7 @@ is-defined-%:
 
 .PHONY: pull-latest
 pull-latest: is-defined-REGISTRY
-	@docker pull $(REGISTRY)/tvaughan/docker-terraform:latest > /dev/null
+	@docker pull $(REGISTRY)/tvaughan/docker-terraform:0.12 > /dev/null
 
 .PHONY: %-s3-bucket
 %-s3-bucket: is-defined-AWS_ACCESS_KEY_ID is-defined-AWS_SECRET_ACCESS_KEY is-defined-STARTERKIT_DOMAIN is-defined-STARTERKIT_REGION pull-latest
@@ -25,7 +25,7 @@ pull-latest: is-defined-REGISTRY
 	    -e AWS_ACCESS_KEY_ID="$(AWS_ACCESS_KEY_ID)"				\
 	    -e AWS_SECRET_ACCESS_KEY="$(AWS_SECRET_ACCESS_KEY)"			\
 	    -v "$(PWD)":/mnt/workdir						\
-            $(REGISTRY)/tvaughan/docker-terraform:latest			\
+            $(REGISTRY)/tvaughan/docker-terraform:0.12				\
 	    $*-s3-bucket "$(STARTERKIT_REGION)" "$(STARTERKIT_DOMAIN)"
 
 .PHONY: create-remote-state-bucket
@@ -45,7 +45,7 @@ terraform-run-%: check-environment pull-latest
 	    -e TF_CLI_ARGS_init="-upgrade=true"					\
 	    -e TF_CLI_ARGS_plan="-out=terraform.plan"				\
 	    -v "$(PWD)":/mnt/workdir						\
-            $(REGISTRY)/tvaughan/docker-terraform:latest			\
+            $(REGISTRY)/tvaughan/docker-terraform:0.12				\
 	    terraform $*							\
 	    -var=starterkit_database_username="$(STARTERKIT_DATABASE_USERNAME)"	\
 	    -var=starterkit_database_password="$(STARTERKIT_DATABASE_PASSWORD)"	\
@@ -62,7 +62,7 @@ terraform-short-run-%: check-environment pull-latest
 	    -e AWS_ACCESS_KEY_ID="$(AWS_ACCESS_KEY_ID)"				\
 	    -e AWS_SECRET_ACCESS_KEY="$(AWS_SECRET_ACCESS_KEY)"			\
 	    -v "$(PWD)":/mnt/workdir						\
-            $(REGISTRY)/tvaughan/docker-terraform:latest			\
+            $(REGISTRY)/tvaughan/docker-terraform:0.12				\
 	    terraform $*							\
 	    $(TERRAFORM_EXTRA_SHORT_RUN_ARGS)
 
@@ -83,7 +83,7 @@ maybe-create: lint terraform-run-plan
 	    -e AWS_ACCESS_KEY_ID="$(AWS_ACCESS_KEY_ID)"				\
 	    -e AWS_SECRET_ACCESS_KEY="$(AWS_SECRET_ACCESS_KEY)"			\
 	    -v "$(PWD)":/mnt/workdir						\
-            $(REGISTRY)/tvaughan/docker-terraform:latest			\
+            $(REGISTRY)/tvaughan/docker-terraform:0.12				\
 	    terraform apply terraform.plan
 
 .PHONY: create

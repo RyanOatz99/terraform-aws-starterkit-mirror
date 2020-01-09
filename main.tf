@@ -2,7 +2,7 @@
 
 provider "aws" {
   # https://www.terraform.io/docs/providers/aws/index.html
-  version = "~> 1"
+  version = "~> 2"
 
   region = var.starterkit_region
 }

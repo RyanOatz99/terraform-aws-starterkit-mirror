@@ -4,10 +4,6 @@ SHELL = bash
 
 REGISTRY = registry.gitlab.com
 
-# Container Linux (CoreOS) 1967.3.0 Stable Channel (HVM)
-# https://coreos.com/os/docs/latest/booting-on-ec2.html
-STARTERKIT_INSTANCE_AMI_ID ?= "ami-0c1cc1260c7828fcb"
-
 .PHONY: all
 all: create
 
@@ -35,7 +31,7 @@ create-remote-state-bucket: create-s3-bucket
 delete-remote-state-bucket: delete-s3-bucket
 
 .PHONY: check-environment
-check-environment: is-defined-AWS_ACCESS_KEY_ID is-defined-AWS_SECRET_ACCESS_KEY is-defined-STARTERKIT_DATABASE_PASSWORD is-defined-STARTERKIT_DATABASE_TCP_PORT is-defined-STARTERKIT_DATABASE_USERNAME is-defined-STARTERKIT_DOMAIN is-defined-STARTERKIT_REGION is-defined-STARTERKIT_INSTANCE_AMI_ID
+check-environment: is-defined-AWS_ACCESS_KEY_ID is-defined-AWS_SECRET_ACCESS_KEY is-defined-STARTERKIT_DATABASE_PASSWORD is-defined-STARTERKIT_DATABASE_TCP_PORT is-defined-STARTERKIT_DATABASE_USERNAME is-defined-STARTERKIT_DOMAIN is-defined-STARTERKIT_REGION
 
 .PHONY: terraform-run-%
 terraform-run-%: check-environment pull-latest
@@ -52,7 +48,6 @@ terraform-run-%: check-environment pull-latest
 	    -var=starterkit_database_tcp_port="$(STARTERKIT_DATABASE_TCP_PORT)"	\
 	    -var=starterkit_domain="$(STARTERKIT_DOMAIN)"			\
 	    -var=starterkit_region="$(STARTERKIT_REGION)"			\
-	    -var=starterkit_instance_ami_id="$(STARTERKIT_INSTANCE_AMI_ID)"	\
 	    $(TERRAFORM_EXTRA_RUN_ARGS)						\
 	    .
 
